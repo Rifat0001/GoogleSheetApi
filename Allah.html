@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Images from Google Sheet</title>
+    <style>
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-container img {
+            width: 200px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Images from Google Sheet</h1>
+    <div id="images" class="image-container"></div>
+
+    <script>
+        async function fetchImages() {
+            const url = 'https://docs.google.com/spreadsheets/d/1D-xP6tWfxsX3mYqjd20szmq9CRB1vEOLzZx9RzxMuGI/pubhtml?timestamp=' + new Date().getTime();
+
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                const rows = doc.querySelectorAll('table tbody tr');
+
+                const imageContainer = document.getElementById('images');
+                const imageUrls = [];
+
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    cells.forEach(cell => {
+                        const imgLink = cell.textContent.trim();
+                        if (imgLink) {
+                            const imgElement = document.createElement('img');
+                            imgElement.src = imgLink;
+                            imgElement.style.maxWidth = '25%';
+                            imgElement.style.height = 'auto';
+                            imageContainer.appendChild(imgElement);
+
+                            imageUrls.push(imgLink);
+                        }
+                    });
+                });
+
+                // Create the options array dynamically
+                const options = imageUrls.map((imgSrc, index) => ({
+                    id: `option${index + 1}`,
+                    name: "Question 1", // Consider using actual question text
+                    imgSrc: imgSrc,
+                    label: `Option ${index + 1}`
+                }));
+
+                return { imageUrls, options };
+
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        }
+
+        fetchImages().then(data => {
+            const imageUrls = data.imageUrls;
+            const options = data.options;
+
+            // Use imageUrls and options here
+            console.log('Image URLs:', imageUrls);
+            console.log('Options:', options);
+            console.log('Data:', data);
+        });
+
+    </script>
+</body>
+
+</html>

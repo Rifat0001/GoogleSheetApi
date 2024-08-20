@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Form</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Roboto, sans-serif;
+            overflow-y: auto;
+            /* Allows the page to scroll vertically */
+        }
+
+        .header {
+            background-color: #232F3E;
+            color: white;
+            padding: 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            /* Align items at the start */
+            width: 100%;
+            /* Ensures the header takes full width */
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .header img {
+            max-height: 100px;
+            /* Set a max-height for the image to fit within the header */
+            height: auto;
+            margin-right: 20px;
+            /* Add some space between the image and text */
+        }
+
+        .header-text {
+            flex-grow: 1;
+            /* Allow text to use remaining space */
+            text-align: center;
+            /* Center the text */
+            font-size: 20px;
+            /* Adjust the font size as needed */
+        }
+
+        .info-bar {
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            height: 30px;
+            /* Approximately half an inch high */
+            border-bottom: 1px solid #ddd;
+            font-size: 12px;
+        }
+
+        .info-bar span {
+            margin-right: 10px;
+        }
+
+        .info-bar .orange-text {
+            color: #ff6a00;
+            /* Amazon-like orange color */
+            font-weight: bold;
+        }
+
+        #choice-container {
+            display: flex;
+            flex-wrap: wrap;
+            /* Allows images to wrap to the next line if they exceed the width of the container */
+            gap: 2%;
+            /* Adds space between the images as a percentage of the container's width */
+        }
+
+
+
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            padding: 10px;
+            box-sizing: border-box;
+            border-right: 1px solid #ddd;
+            font-size: 10pt;
+            /* Smaller font size for the sidebar */
+            color: #111;
+            /* Amazon-like text color */
+        }
+
+        .sidebar h3 {
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar p {
+            margin: 5px 0;
+            padding-left: 10px;
+            /* Indents the paragraphs */
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            background-color: white;
+            width: 100%;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-group {
+            margin-bottom: 70px;
+        }
+
+        label {
+            display: block;
+            font-size: 14pt;
+        }
+
+        .question {
+            display: block;
+            color: #cf020c;
+            font-size: 16pt;
+            margin-bottom: 20px;
+        }
+
+        .format {
+            display: flex;
+            height: 100%;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            max-width: 600px;
+            /* Limits the maximum width to 600px */
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-start;
+            /* Align items to the start for better appearance */
+            justify-content: flex-start;
+            /* Align items to the start */
+        }
+
+        .radio-option img {
+            max-width: 100%;
+            /* Ensures images fill their container */
+            width: 250px;
+            height: auto;
+            /* Maintains aspect ratio */
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            /* Cursor pointer for images */
+        }
+
+        .radio-option label {
+            text-align: center;
+            margin-top: 5px;
+            /* Add space above label */
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #submit {
+            display: block;
+            margin-top: 20px;
+        }
+
+        #error-message {
+            color: red;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                display: none;
+                /* Hide the sidebar on smaller screens */
+            }
+
+            .content {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header img {
+                max-height: 30px;
+                /* Adjust the size for smaller screens */
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="images/amazonlogo.png" alt="Logo"> <!-- Add your image path here -->
+        <div class="header-text">This is a survey to help improve our books :)</div>
+    </div>
+    <div class="info-bar">
+        <span>1-4 of 463 results for your book search<span class="orange-text"></span> </span>
+    </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <h3>Prime Delivery</h3>
+            <p>Today by 10PM</p>
+            <p>Tomorrow by 3PM</p>
+            <h3>Delivery</h3>
+            <p>All Prime</p>
+            <p>Delivery Day</p>
+            <p>Get It Today</p>
+            <p>Get It by Tomorrow</p>
+            <h3>Kindle Unlimited</h3>
+            <h3>Department</h3>
+            <p>Books</p>
+            <p>Children's Science Fiction & Fantasy</p>
+            <p>Children's Literature</p>
+            <p>Humor & Entertainment</p>
+            <p>Religion & Spirituality</p>
+            <p>Children's Science & Nature Books</p>
+            <p>Genre Literature & Fiction</p>
+        </div>
+        <div class="content">
+            <div class="container">
+                <h2>Pretend you're on Amazon shopping for a book on this topic. Which book would you buy?</h2>
+                <form id="survey-form" method="post" action="" name="survey-form">
+                    <!--     <h4>Survey Form</h4> -->
+                    <!-- First Question -->
+                    <div class="form-group">
+                        <label class="question" for="choice-container"><b>Please click on the one you like
+                                best:*</b></label>
+                        <div id="choice-container" class="radio-group">
+                        </div>
+                    </div>
+
+                    <!-- Second Question -->
+                    <div class="form-group">
+                        <label class="question" for="multi-question"><b>Why did you choose this book? Be
+                                specific.*</b><br>
+                            (Please write 2 full sentences that an idiot (me) could understand)
+                        </label>
+                        <textarea id="multi-question" name="Why?" rows="7"></textarea>
+                    </div>
+
+                    <!-- Third Question -->
+                    <div class="form-group">
+                        <label class="question" for="interest-level"><b>What is your level of interest in this
+                                subject?*</b></label>
+                        <div class="vertical-radio-group">
+                            <div class="format">
+                                <input type="radio" id="interest1" name="Question 3" value="Yuck! Not my kind of thing">
+                                <label for="interest1">Yuck! Not my kind of thing</label>
+                            </div>
+                            <div class="format">
+                                <input type="radio" id="interest2" name="Question 3" value="Neutral">
+                                <label for="interest2">Neutral</label>
+                            </div>
+
+                            <div class="format">
+                                <input type="radio" id="interest3" name="Question 3" value="Wow! I love it!">
+                                <label for="interest3">Wow! I love it!</label>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <!-- Fourth Question -->
+                    <div class="form-group">
+                        <label class="question" for="buy-books"><b>Do you buy books on Amazon?*</b></label>
+                        <div class="vertical-radio-group">
+                            <div class="format">
+                                <input type="radio" id="buy1" name="Question 4" value="Yes">
+
+                                <label for="buy1">Yes</label>
+
+                            </div>
+                            <div class="format">
+                                <input type="radio" id="buy2" name="Question 4" value="No">
+                                <label for="buy2">No</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Fifth Question -->
+                    <div class="form-group">
+                        <label class="question" for="id-number"><b>If you don't see your CloudResearch ID number
+                                pre-filled in the box
+                                below, please enter it so you can get paid.*</b></label>
+                        <input type="text" id="id-number" name="ParticipantID"
+                            placeholder="Enter your CloudResearch ID">
+                    </div>
+
+                    <!-- Optional Email -->
+                    <div class="form-group">
+                        <label class="question" for="email"><b>(OPTIONAL) If you'd like to receive a FREE copy of our
+                                book when it's
+                                published, enter your email below.</b></label>
+                        <input type="email" id="email" name="Email" placeholder="Enter your email">
+                    </div>
+                    <span id="error-message" class="error-message"></span>
+                    <button type="submit" value="Submit" id="submit">Submit</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
